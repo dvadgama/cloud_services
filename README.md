@@ -28,18 +28,17 @@ This Puppet module provides a custom type for deploying an instance in AWS and/o
           ~/.ssh/aws for AWS  
           ~/.ssh/google  for GCE  
       - **bootstrap_user**: This is a bootstrapping user we are going to use and it defaults to **ubuntu** for both AWS & GCE
-   - AWS specific Properties/Parameters
+    - AWS specific Properties/Parameters
       - **access_key_id**: your aws access key id, which can be set via ENV variable as well  
       - **access_key**: your aws access key, which can be set via ENV cariable as well
       - **key_name**: AWS key pair name in.It defaults to 'aws'  
-   - GCE specific Properties/Parameters
+    - GCE specific Properties/Parameters
       - **project_id**: your Google project ID 
       - **client_email**: Email ID of your service account for GCE, can ve set via ENV variable
       - **key_location**: Location of your google p12 key, can be set via ENV variable.  Please note that you will need to remove the passphrase from this p12 key
 
 
-##<u>ToDo</u>
-
+##<u>ToDo</u>  
 - Reading credentials from .fog file (or supplied credentials file)
 - DNS support for AWS & GCE
 - Loadbalncer for AWS 7 GCE
@@ -47,25 +46,21 @@ This Puppet module provides a custom type for deploying an instance in AWS and/o
 ##<u>Example Usage</u>
 
 ###<u>AWS</u>
-
-* #### Create an AWS instance
-    - with access_key and, access_key_id from ENV variable <br/>
-     <code>
-       puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
+- Create an AWS instance
+ - with access_key and, access_key_id from ENV variable  
+ - <code> puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
                                                                     provider => 'aws',
                                                                     ensure   => present,}"
-     </code>
+    </code>
 
-    - with access_key and/or access_key_id set in moudle ** NOT RECOMMENED ** <br/>
-      <code>
-        puppet apply --moudulepath=/moudle/path -e "cloud_machine {'test_machine':
+ - with access_key and/or access_key_id set in moudle **NOT RECOMMENED**
+ - <code> puppet apply --moudulepath=/moudle/path -e "cloud_machine {'test_machine':
                                                                       provider      => 'aws',
                                                                       access_key_id => 'your aws access key id',
                                                                       access_key    => 'your aws access key',
                                                                       ensure        => present, }"
-      </code>
-
-* #### Stop an AWS instance
+   </code>
+-Stop an AWS instance
     - with access_key and, access_key_id from ENV variable <br/>
     <code> puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
                                                                         provider => 'aws',
