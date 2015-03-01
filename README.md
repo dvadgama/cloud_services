@@ -46,6 +46,7 @@ This Puppet module provides a custom type for deploying an instance in AWS and/o
     - GCE specific Properties/Parameters
       - **project_id**: your Google project ID 
       - **client_email**: Email ID of your service account for GCE, can ve set via ENV variable
+      - **disk_size**: disk size of an instance in GCE ,it defaults to 10GB
       - **key_location**: Location of your google p12 key, can be set via ENV variable.  Please note that you will need to remove the passphrase from this p12 key
 
 
