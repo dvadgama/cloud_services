@@ -32,14 +32,48 @@ Puppet::Type.type(:cloud_machine).provide(:aws) do
       machine.servers.map { | server | server.state if server.tags['Name'] == name and server.state  != 'terminated' }.compact.first
     end
     
-    def create                       
-      puts "creating AWS instance #{resource[:name]}"
-      server = machine.servers.create({:flavor_id => resource[:template_type],:image_id  => resource[:template],:tags => {'Name' => resource[:name]}})
-      server.wait_for { server.ready? }
+    def create 
+      
+      case  resource[:bootstrap]
+      when :false
+        puts "Creating AWS instance #{resource[:name]}"
+        server = machine.servers.create({:flavor_id => resource[:template_type],
+	                                 :image_id  => resource[:template],
+	                                 :tags => {'Name' => resource[:name]}})
+	
+        server.wait_for { server.ready? }
+	
+      when :true
+	puts "Bootstrapping AWS instance #{resource[:name]}"
+		
+	server = machine.servers.bootstrap({:flavor_id => resource[:template_type],
+	                                    :image_id  => resource[:template],
+	                                    :tags => {'Name' => resource[:name]},
+	                                    :private_key_path => resource[:ssh_private_key],
+	                                    :public_key_path => resource[:ssh_public_key],
+	                                    :key_name =>  resource[:keypair], 
+	                                    :username => resource[:bootstrap_user]})
+	
+	server.wait_for { server.ready? }
+	
+	file = File.basename(resource[:bootstrap_file])
+	src_dir = File.expand_path(File.dirname(resource[:bootstrap_file]))
+	dst_dir = '/tmp'
+	
+	src = src_dir + '/' + file
+	dst = dst_dir + '/' + file
+	
+	server.scp(src,dst_dir)
+	server.ssh("chmod +x #{dst}")
+	server.ssh("sudo #{dst}")
+      end
+      
+    
     end
     
-    def destroy
-      puts "destroying AWS instance #{resource[:name]}"
+    def terminate
+      puts "Destroying AWS instance #{resource[:name]}"
+ 
       id = get_id(resource[:name])
       server = machine.servers.get(id)
       server.destroy
@@ -48,9 +82,10 @@ Puppet::Type.type(:cloud_machine).provide(:aws) do
     
     def running
       
-      self.create if status(resource[:name]) == ( nil or 'terminated')
+      self.create if status(resource[:name]) == nil
       
       unless status(resource[:name]) == 'running'
+	puts "Starting AWS  instance #{resource[:name]}"
 	id =  get_id(resource[:name])
 	server = machine.servers.get(id)
 	server.start
@@ -62,8 +97,9 @@ Puppet::Type.type(:cloud_machine).provide(:aws) do
     def stopped
       
       unless status(resource[:name]) == 'stopped'
+	puts "Stopping AWS instance #{resource[:name]}"
 	id =  get_id(resource[:name])
-	server = machine.server.get(id)
+	server = machine.servers.get(id)
 	server.stop
 	server.wait_for { state == 'stopped' }
       end
@@ -71,7 +107,7 @@ Puppet::Type.type(:cloud_machine).provide(:aws) do
     end
     
     def exists?
-	return true if status(resource[:name]) == ('stopped' or 'running' or 'shutting-down')
+	return true unless status(resource[:name]) == nil
     end 
     
 end

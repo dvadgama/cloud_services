@@ -29,7 +29,7 @@ module Puppet
       end
       
       newvalue(:absent) do
-	provider.destroy
+	provider.terminate
       end
       
       newvalue(:running) do
@@ -53,8 +53,6 @@ module Puppet
 	  return true if is_value == :present or  is_value == :running or is_value ==  :stopped
 	when :running, :stopped, :absent
 	  return  true if is_value  ==  should_value
-	else
-	  return false
 	end
 	
       end
@@ -73,7 +71,20 @@ module Puppet
 	 self[:template] = 'ami-f0b11187'                         if self[:template] == nil  
 	 self[:template_type] = 't2.micro'                        if self[:template_type] == nil
          self[:region] = 'eu-west-1'                              if self[:region] == nil
-	 fail("access_key_id is required for #{self[:provider]}") if self[:access_key] == nil
+	 #before we fail, check if env variable is set for aws  keys
+	 self[:access_key_id] ||= ENV['aws_access_key_id']
+	 self[:access_key]    ||= ENV['aws_secret_access_key']
+	 
+	 if self[:bootstrap]  == :true
+	   self[:ssh_public_key]  ||= '~/.ssh/aws.pub'
+	   self[:ssh_private_key] ||= '~/.ssh/aws'
+	   self[:keypair]         ||= 'aws'
+	   self[:bootstrap_user]  ||= 'ubuntu'
+	   
+	   fail("bootstrap_file is required") if self[:bootstrap_file] == nil
+	 end
+	 
+	 fail("access_key_id is required for #{self[:provider]}") if self[:access_key] == nil 
 	 fail("access_key is required for #{self[:provider]}")    if self[:access_key_id] == nil
 	 
 	when :google
@@ -81,6 +92,16 @@ module Puppet
 	  self[:template_type] = 'f1-micro'                           if self[:template_type] == nil
 	  self[:region] = 'europe-west1-b'                            if self[:region] == nil  
 	  self[:disk_size] = 10                                       if self[:disk_size] == nil
+	  
+	  if self[:bootstrap]  == :true
+	    self[:ssh_public_key]  ||= '~/.ssh/google.pub'
+	    self[:ssh_private_key] ||= '~/.ssh/google'
+	    self[:bootstrap_user]  ||= 'ubuntu'
+	   
+	    fail("bootstrap_file is required") if self[:bootstrap_file] == nil
+	  end
+	  
+	  
 	  fail("project_id is required for #{self[:provider]}")       if self[:project_id] == nil
 	  fail("client_email is required for #{self[:provider]}")     if self[:client_email] == nil
 	  fail("key_location is required for #{self[:key_location]}") if self[:key_location] == nil
@@ -168,19 +189,52 @@ module Puppet
     
     
    newparam(:access_key) do
-      desc 'access key to  api,  e.g. aws_secret_access_key, this is nor mandtory for same reason aaas access_key_id'
+     desc 'access key to  api,  e.g. aws_secret_access_key, this is nor mandtory for same reason aaas access_key_id'
       
-      validate do | value |
-	fail("access_key => \"#{value}\" must not contain space") if value =~ / /
-      end
+     validate do | value |
+       fail("access_key => \"#{value}\" must not contain space") if value =~ / /
+     end
       
    end
    
+   #bootstrap options
+   
+   newparam(:bootstrap) do
+     desc 'boolean bootstrap,yes or no'
+     newvalues(:true,:false)
+     defaultto :false
+     
+     munge do | value | 
+       value.to_s.to_sym unless value.class.to_s == "Symbol"
+     end
+     
+   end
+      
+   newparam(:bootstrap_user) do
+     desc 'bootstrap user'
+   end
+   
+   newparam(:ssh_public_key) do
+     desc 'Public ssh key  for Keypair'
+   end
+   
+   newparam(:ssh_private_key) do
+     desc 'Private ssh key for Keypair'
+   end
     
+   newparam(:keypair) do
+     desc 'keypair name'
+     defaultto :aws
+   end
+   
+   newparam(:bootstrap_file) do
+     desc 'location of bootstrapping script'
+   end
+   
     #Properties for google api
-    newparam(:project_id) do
-      desc 'Project ID for google compute'
-    end
+   newparam(:project_id) do
+     desc 'Project ID for google compute'
+   end
     
     
     newparam(:client_email) do

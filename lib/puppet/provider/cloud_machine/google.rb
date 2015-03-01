@@ -24,33 +24,67 @@ Puppet::Type.type(:cloud_machine).provide(:google) do
   
     end
     
-    def get_id(name)
-      machine.servers.map { | server | server.id if server.name == name and server.state  != 'TERMINATED' }.compact.first
-    end
-    
     def status(name)
       machine.servers.map { | server | server.state if server.name == name and server.state  != 'TERMINATED' }.compact.first
     end
     
-    def create                       
-      puts "creating Google Compute instance #{resource[:name]}"
+    def create     
       
-      disk = machine.disks.create({:name => resource[:name],:size_gb => resource[:disk_size],:zone_name => resource[:region],:source_image => resource[:template] })
-      disk.wait_for { disk.ready?  }
-
-      server = machine.servers.create({ :machine_type => resource[:template_type],:name => resource[:name],:zone_name => resource[:region],:disks => [disk.get_as_boot_disk(true)], })     
-      server.wait_for { ready? }
+      disk = machine.disks.create({:name => resource[:name],
+                                   :size_gb => resource[:disk_size],
+                                   :zone_name => resource[:region],
+                                   :source_image => resource[:template],})
+       
+       disk.wait_for { disk.ready?  }
+      
+      case resource[:bootstrap]
+      when :false
+       puts "creating Google Compute instance #{resource[:name]}"
+       
+       server = machine.servers.create({:name => resource[:name],
+                                        :machine_type => resource[:template_type],
+                                        :zone_name => resource[:region],
+                                        :disks => [disk.get_as_boot_disk(true)],})
+       
+       server.wait_for { ready? }
+       
+      when :true
+	puts "Bootstrapping Google Compute instance #{resource[:name]}"
+	
+	server = machine.servers.bootstrap({:name => resource[:name], 
+	                                    :machine_type => resource[:template_type],
+	                                    :zone_name => resource[:region],
+	                                    :disks => [disk.get_as_boot_disk(true)], 
+	                                    :private_key_path => resource[:ssh_private_key],
+	                                    :public_key_path => resource[:ssh_public_key],
+	                                    :username => resource[:bootstrap_user],})
+       
+	server.wait_for { server.ready? }
+	
+	file = File.basename(resource[:bootstrap_file])
+	src_dir = File.expand_path(File.dirname(resource[:bootstrap_file]))
+	dst_dir = '/tmp'
+	
+	src = src_dir + '/' + file
+	dst = dst_dir + '/' + file
+	
+	server.scp(src,dst_dir)
+	server.ssh("chmod +x #{dst}")
+	server.ssh("sudo #{dst}")
+      end
+      
     end
     
-    def destroy
+    def terminate
       
-      puts "destroying Google Compute instance #{resource[:name]}"
-      server = machine.servers.get(name)
+      puts "Destroying Google Compute instance #{resource[:name]}"
+      
+      server = machine.servers.get(resource[:name])
      
       server.destroy
       server.wait_for { state == 'TERMINATED' }
       
-      machine.disks.get(name).destroy
+      machine.disks.get(resource[:name]).destroy
      
     end
     
