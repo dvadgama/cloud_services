@@ -1,7 +1,7 @@
 ##<u>cloud_services</u>
 This Puppet module provides a custom type for deploying an instance in AWS and/or GCE.  
 
-##<u>Supported Environment Variable</u>
+##<u>Supported Environment Variables</u>
 - for AWS instance
  - ENV['aws_access_key_id']
  - ENV['aws_secret_access_key']
