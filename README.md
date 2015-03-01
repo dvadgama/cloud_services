@@ -39,15 +39,15 @@ This Puppet module provides a custom type for deploying an instance in AWS and/o
          europe-west1-b for GCE
 
     - AWS specific Properties/Parameters
-      - **access_key_id**: your aws access key id, which can be set via ENV variable as well  
-      - **access_key**: your aws access key, which can be set via ENV cariable as well
+      - **access_key_id**: your aws access key id, which can be set via ENV['aws_access_key_id'] variable as well  
+      - **access_key**: your aws access key, which can be set via ENV['aws_secret_access_key'] cariable as well
       - **key_name**: AWS key pair name in.It defaults to 'aws'  
       
     - GCE specific Properties/Parameters
       - **project_id**: your Google project ID 
-      - **client_email**: Email ID of your service account for GCE, can ve set via ENV variable
+      - **client_email**: Email ID of your service account for GCE, can ve set via ENV['google_client_email'] variable
+      - **key_location**: Location of your google p12 key, can be set via ENV['google_key_location'] variable.  Please note that you will need to remove the passphrase from this p12 key
       - **disk_size**: disk size of an instance in GCE ,it defaults to 10GB
-      - **key_location**: Location of your google p12 key, can be set via ENV variable.  Please note that you will need to remove the passphrase from this p12 key
 
 
 ##<u>ToDo</u>
