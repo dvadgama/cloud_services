@@ -31,7 +31,7 @@ This Puppet module provides a custom type for deploying an instance in AWS and/o
       - **template**: This is a image that we want to boot our instance with,it defaults to
          ami-f0b11187 for AWS
          ubuntu-1410-utopic-v20150202 for GCE
-      - **template_type* : This is a image type that we want to boot our instance with, it defaults to
+      - **template_type** : This is a image type that we want to boot our instance with, it defaults to
          t2.micro for AWS
          f1-mirco for GCE
       - **region**: Region where you want to create an instance.It defaults to
