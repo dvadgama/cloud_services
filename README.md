@@ -151,6 +151,7 @@ This Puppet module provides a custom type for deploying an instance in AWS and/o
                                                                   ensure         => abesent,
                                                                 }"
    ```
+
 ###<u>GCE ( Google Compute Engine)</u>
 - Create a GCE instance
   - with cleint_email and,key_location set in ENV variable
