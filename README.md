@@ -21,13 +21,13 @@ This Puppet module provides a custom type for deploying an instance in AWS and/o
       - **ensure**   :current ensure-able supports, present,running,stopped and absent with present as a default value  
       - **bootstrap**: possible values are true/false and it defaults to false, set it to true if you wish to bootstrap your instance  
       - **bootstrap_file**: Required/Useful when bootstrap is set to true, this is location of your bootstrap script  
-      - **ssh_public_key**: This is location for the public ssh key , used to connect to a machine during bootstrapping.It defaults to  
+      - **ssh_public_key**: This is location of the public ssh key,used to connect to a machine during bootstrapping.It defaults to  
          ~/.ssh/aws.pub for AWS  
          ~/.ssh/google.pub  for GCE  
-      - **ssh_private_key**: This is location for the private ssh key , used to connect to a machine during bootstrapping.It defaults to  
+      - **ssh_private_key**: This is location of the private ssh key,used to connect to a machine during bootstrapping.It defaults to  
           ~/.ssh/aws for AWS  
           ~/.ssh/google  for GCE  
-      - **bootstrap_user**: This is a bootstrapping user we are going to use and it defaults to **ubuntu** for both AWS & GCE
+      - **bootstrap_user**: This is a bootstrapping user we are going to use with bootstrapping and, it defaults to **ubuntu** for both AWS & GCE
       - **template**: This is a image that we want to boot our instance with,it defaults to
          ami-f0b11187 for AWS
          ubuntu-1410-utopic-v20150202 for GCE
@@ -53,7 +53,7 @@ This Puppet module provides a custom type for deploying an instance in AWS and/o
 ##<u>ToDo</u>
 - Reading credentials from .fog file (or supplied credentials file)
 - DNS support for AWS & GCE
-- Loadbalncer for AWS 7 GCE
+- Loadbalncer for AWS & GCE
 - Add support for puppet resource cloud_machine , with an appropriate self.instances in providers
 - Remove code dubpliation in Provider 
 
