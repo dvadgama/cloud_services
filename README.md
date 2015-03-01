@@ -14,7 +14,7 @@ This Puppet module provides a custom type for deploying an instance in AWS and/o
 - it can **bootstrap** the AWS or GCE instnace
 
 ##<u>Supported Type</u>  
-- ##cloud_machine  
+- ####cloud_machine  
   - Type Properties/Parameters  
     - Common for both AWS & GCE provider  
       - **provider**: currently supports aws and, google provider  
