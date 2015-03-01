@@ -28,6 +28,16 @@ This Puppet module provides a custom type for deploying an instance in AWS and/o
           ~/.ssh/aws for AWS  
           ~/.ssh/google  for GCE  
       - **bootstrap_user**: This is a bootstrapping user we are going to use and it defaults to **ubuntu** for both AWS & GCE
+      - **template**: This is a image that we want to boot our instance with,it defaults to
+         ami-f0b11187 for AWS
+         ubuntu-1410-utopic-v20150202 for GCE
+      - **template_type* : This is a image type that we want to boot our instance with, it defaults to
+         t2.micro for AWS
+         f1-mirco for GCE
+      - **region**: Region where you want to create an instance.It defaults to
+         eu-west-1 for AWS
+         europe-west1-b for GCE
+
     - AWS specific Properties/Parameters
       - **access_key_id**: your aws access key id, which can be set via ENV variable as well  
       - **access_key**: your aws access key, which can be set via ENV cariable as well
@@ -119,9 +129,29 @@ This Puppet module provides a custom type for deploying an instance in AWS and/o
                                                                   ensure        => abesent,
                                                                 }"
    ```
-
+- Bootstrap an AWS instance
+  - with access_key and, access_key_id from ENV variable  
+   ```
+    puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
+                                                                 provider       => 'aws',
+                                                                 bootstrap      => true,
+                                                                 bootstrap_file => './bootstrap.sh',
+                                                                 ensure         => present,
+                                                               }"
+    ```
+  - with access_key and/or access_key_id set in moudle **NOT RECOMMENED *
+   ```
+    puppet apply --moudulepath=/moudle/path -e "cloud_machine {'test_machine':
+                                                                  provider       => 'aws',
+                                                                  access_key_id  => 'your aws access key id',
+                                                                  access_key     => 'your aws access key',
+                                                                  bootstrap      => true,
+                                                                  bootstrap_file => './bootstrap.sh'
+                                                                  ensure         => abesent,
+                                                                }"
+   ```
 ###<u>GCE ( Google Compute Engine)</u>
-- Create an GCE instance
+- Create a GCE instance
   - with cleint_email and,key_location set in ENV variable
    ```
     puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
@@ -142,7 +172,7 @@ This Puppet module provides a custom type for deploying an instance in AWS and/o
 
    ```
 
-- Destroy an GCE instance
+- Destroy a GCE instance
   - with cleint_email and,key_location set in ENV variable
    ```
     puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
@@ -152,7 +182,7 @@ This Puppet module provides a custom type for deploying an instance in AWS and/o
                                                                }"
    ```
 
-  - with client_email and/or key_location set in moudle ** NOT RECOMMANDED ** <br/>
+  - with client_email and/or key_location set in moudle **NOT RECOMMANDED**
    ```
     puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
                                                                  provider     => 'google',
@@ -164,3 +194,28 @@ This Puppet module provides a custom type for deploying an instance in AWS and/o
    ```
 - Stopping & Starting GCE instance
   - Currently stopping and, starting operations are synonym to absent & present operations
+ 
+- Bootstrap a GCE instance
+  - with cleint_email and,key_location set in ENV variable
+   ```
+    puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
+                                                                 provider       => 'google',
+                                                                 project_id     => 'your google project id',
+                                                                 bootstrap      => true,
+                                                                 bootstrap_file => './bootstrap.sh',
+                                                                 ensure         => absent,
+                                                               }"
+   ```
+
+  - with client_email and/or key_location set in moudle **NOT RECOMMANDED**
+   ```
+    puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
+                                                                 provider       => 'google',
+                                                                 project_id     => 'your google project id',
+                                                                 client_email   => 'google client email from service account',
+                                                                 key_location   => 'google p12 key from service account',
+                                                                 bootstrap      => true,
+                                                                 bootstrap_file => './bootstrap.sh',
+                                                                 ensure         => absent,
+                                                               }"
+   ```
