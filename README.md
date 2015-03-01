@@ -10,38 +10,32 @@ This Puppet module provides a custom type for deploying an instance in AWS and/o
  - ENV['google_key_location']
 
 ##<u>What it can do?</u>
-- it can ** create ** the AWS or GCE instance
-- it can ** bootstrap ** the AWS or GCE instnace
+- it can **create** the AWS or GCE instance
+- it can **bootstrap** the AWS or GCE instnace
 
-##<u>Supported Type</u>
-- ###cloud_machine
-    - #### Type Properties/Parameters
-        - ####Common for both AWS & GCE provider
-        <table>
-         <tr><u>**provider**</u></tr><tr> currently supports aws and, google provider</tr>  
-         <tr><u>**ensure**</u></tr><tr> current ensure-able supports, present,running,stopped and absent with present as a default value</tr>  
-         <tr><u>**bootstrap**</u></tr><tr> possible values are true/false and it defaults to false, set it to true if you wish to bootstrap your instance</tr>  
-         <tr><u>**bootstrap_file**</u></tr><tr> Required/Useful when bootstrap is set to true, this is location of your bootstrap script</tr>  
-         <tr><u>**ssh_public_key**</u><tr> <tr> This is location for the public ssh key , used to connect to a machine during bootstrapping.It defaults to  
-          ~/.ssh/aws.pub for AWS  
-          ~/.ssh/google.pub  for GCE<tr/>  
-        <tr><u>**ssh_private_key**</u><tr> <tr> This is location for the private ssh key , used to connect to a machine during bootstrapping.It defaults to  
+##<u>Supported Type</u>  
+- cloud_machine  
+  - Type Properties/Parameters  
+    - Common for both AWS & GCE provider  
+      - **provider**: currently supports aws and, google provider  
+      - **ensure**   :current ensure-able supports, present,running,stopped and absent with present as a default value  
+      - **bootstrap**: possible values are true/false and it defaults to false, set it to true if you wish to bootstrap your instance  
+      - **bootstrap_file**: Required/Useful when bootstrap is set to true, this is location of your bootstrap script  
+      - **ssh_public_key**: This is location for the public ssh key , used to connect to a machine during bootstrapping.It defaults to  
+         ~/.ssh/aws.pub for AWS  
+         ~/.ssh/google.pub  for GCE  
+      - **ssh_private_key**: This is location for the private ssh key , used to connect to a machine during bootstrapping.It defaults to  
           ~/.ssh/aws for AWS  
-          ~/.ssh/google  for GCE</tr>  
-          <tr><u>**bootstrap_user**</u><tr/><tr>
-        </table>  
-        - ####AWS specific Properties/Parameters
-         <table>
-          <tr><u>**access_key_id**</u><tr/> <tr> your aws access key id<tr/>  
-          <tr><u>**access_key**</u><tr/> <tr> your aws access key <tr/>  
-          <tr><u>**key_name**</u><tr/> <tr> key pair name in aws.It defaults to 'aws'<tr/>  
-        </table>  
-        - ####GCE specific Properties/Parameters
-         <table>
-          <tr><u>**access_key_id**</u><tr/> <tr> your aws access key id<tr/>  
-          <tr><u>**access_key**</u><tr/> <tr> your aws access key <tr/>  
-          <tr><u>**key_name**</u><tr/> <tr> key pair name in aws.It defaults to 'aws'<tr/>  
-        </table>  
+          ~/.ssh/google  for GCE  
+      - **bootstrap_user**: This is a bootstrapping user we are going to use and it defaults to **ubuntu** for both AWS & GCE
+   - AWS specific Properties/Parameters
+      - **access_key_id**: your aws access key id, which can be set via ENV variable as well  
+      - **access_key**: your aws access key, which can be set via ENV cariable as well
+      - **key_name**: AWS key pair name in.It defaults to 'aws'  
+   - GCE specific Properties/Parameters
+      - **project_id**: your Google project ID 
+      - **client_email**: Email ID of your service account for GCE, can ve set via ENV variable
+      - **key_location**: Location of your google p12 key, can be set via ENV variable.  Please note that you will need to remove the passphrase from this p12 key
 
 
 ##<u>ToDo</u>
