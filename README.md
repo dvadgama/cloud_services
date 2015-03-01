@@ -50,96 +50,117 @@ This Puppet module provides a custom type for deploying an instance in AWS and/o
 
 ###<u>AWS</u>
 - Create an AWS instance
- - with access_key and, access_key_id from ENV variable  
-  - <code> puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
-                                                                    provider => 'aws',
-                                                                    ensure   => present,}"
-    </code>
+  - with access_key and, access_key_id from ENV variable  
+   ```
+    puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
+                                                                 provider => 'aws',
+                                                                 ensure   => present,
+                                                              }"
+    ```
 
- - with access_key and/or access_key_id set in moudle **NOT RECOMMENED**
-  - <code> puppet apply --moudulepath=/moudle/path -e "cloud_machine {'test_machine':
-                                                                      provider      => 'aws',
-                                                                      access_key_id => 'your aws access key id',
-                                                                      access_key    => 'your aws access key',
-                                                                      ensure        => present, }"
-   </code>
+  - with access_key and/or access_key_id set in moudle **NOT RECOMMENED**
+   ```
+    puppet apply --moudulepath=/moudle/path -e "cloud_machine {'test_machine':
+                                                                  provider      => 'aws',
+                                                                  access_key_id => 'your aws access key id',
+                                                                  access_key    => 'your aws access key',
+                                                                  ensure        => present,
+                                                                }"
+    ```
 - Stop an AWS instance
-    - with access_key and, access_key_id from ENV variable <br/>
-     - <code> puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
-                                                                        provider => 'aws',
-                                                                        ensure   => stopped,}"
-       <code/>
-    - with access_key and/or access_key_id set in moudle **NOT RECOMMENED**
-     - <code> puppet apply --moudulepath=/moudle/path -e "cloud_machine {'test_machine':
-                                                                         provider      => 'aws',
-                                                                         access_key_id => 'your aws access key id',
-                                                                         access_key    => 'your aws access key',
-                                                                         ensure        => stopped, }"
-       <code/>
+  - with access_key and, access_key_id from ENV variable <br/>
+   ```
+    puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
+                                                                 provider => 'aws',
+                                                                 ensure   => stopped,
+                                                               }"
+   ```
+  - with access_key and/or access_key_id set in moudle **NOT RECOMMENED**
+   ```
+    puppet apply --moudulepath=/moudle/path -e "cloud_machine {'test_machine':
+                                                                  provider      => 'aws',
+                                                                  access_key_id => 'your aws access key id',
+                                                                  access_key    => 'your aws access key',
+                                                                  ensure        => stopped, 
+                                                                }"
+   ```
 - Start an AWS instance
   - with access_key and, access_key_id from ENV variable
-   - <code> puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
-                                                                        provider => 'aws',
-                                                                        ensure   => running,}"
-     <code/>
+   ```
+    puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
+                                                                 provider => 'aws',
+                                                                 ensure   => running,
+                                                               }"
+   ```
 
   - with access_key and/or access_key_id set in moudle **NOT RECOMMENED**  
-    - <code> puppet apply --moudulepath=/moudle/path -e "cloud_machine {'test_machine':
-                                                                         provider      => 'aws',
-                                                                         access_key_id => 'your aws access key id',
-                                                                         access_key    => 'your aws access key',
-                                                                         ensure        => running, }"
-      <code/>
+   ```
+    puppet apply --moudulepath=/moudle/path -e "cloud_machine {'test_machine':
+                                                                  provider      => 'aws',
+                                                                  access_key_id => 'your aws access key id',
+                                                                  access_key    => 'your aws access key',
+                                                                  ensure        => running, 
+                                                                }"
+    ```
 - Destroy an AWS instance
- - with access_key and, access_key_id from ENV variable  
-   - <code> puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
-                                                                       provider => 'aws',
-                                                                       ensure   => absent,}"
-     <code/>
- - with access_key and/or access_key_id set in moudle **NOT RECOMMENED *
-   - <code> puppet apply --moudulepath=/moudle/path -e "cloud_machine {'test_machine':
-                                                                       provider      => 'aws',
-                                                                       access_key_id => 'your aws access key id',
-                                                                       access_key    => 'your aws access key',
-                                                                       ensure        => abesent, }"
-     <code/>
+  - with access_key and, access_key_id from ENV variable  
+   ```
+    puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
+                                                                 provider => 'aws',
+                                                                 ensure   => absent,
+                                                               }"
+    ```
+  - with access_key and/or access_key_id set in moudle **NOT RECOMMENED *
+   ```
+    puppet apply --moudulepath=/moudle/path -e "cloud_machine {'test_machine':
+                                                                  provider      => 'aws',
+                                                                  access_key_id => 'your aws access key id',
+                                                                  access_key    => 'your aws access key',
+                                                                  ensure        => abesent,
+                                                                }"
+   ```
 
 ###<u>GCE ( Google Compute Engine)</u>
-
 - Create an GCE instance
- - with cleint_email and,key_location set in ENV variable
-   - <code> puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
-                                                                        provider   => 'google',
-                                                                        project_id => 'your google project id',
-                                                                        ensure     => present,}"
-     <code/>
-
+  - with cleint_email and,key_location set in ENV variable
+   ```
+    puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
+                                                                 provider   => 'google',
+                                                                 project_id => 'your google project id',
+                                                                 ensure     => present,
+                                                               }"
+   ```
   - with client_email and/or key_location set in moudle **NOT RECOMMANDED**  
-    - <code> puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
-                                                                        provider     => 'google',
-                                                                        project_id   => 'your google project id',
-                                                                        client_email => 'google client email from service account',
-                                                                        key_location => 'google p12 key from service account',
-                                                                        ensure       => present,}"
+   ```
+    puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
+                                                                 provider     => 'google',
+                                                                 project_id   => 'your google project id',
+                                                                 client_email => 'google client email from service account',
+                                                                 key_location => 'google p12 key from service account',
+                                                                 ensure       => present,
+                                                               }"
 
-       <code/>
+   ```
 
 - Destroy an GCE instance
-  - with cleint_email and,key_location set in ENV variable <br/>
-   - <code> puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
-                                                                        provider   => 'google',
-                                                                        project_id => 'your google project id',
-                                                                        ensure     => absent,}"
-      <code/>
+  - with cleint_email and,key_location set in ENV variable
+   ```
+    puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
+                                                                 provider   => 'google',
+                                                                 project_id => 'your google project id',
+                                                                 ensure     => absent,
+                                                               }"
+   ```
 
-   - with client_email and/or key_location set in moudle ** NOT RECOMMANDED ** <br/>
-    - <code> puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
-                                                                        provider     => 'google',
-                                                                        project_id   => 'your google project id',
-                                                                        client_email => 'google client email from service account',
-                                                                        key_location => 'google p12 key from service account',
-                                                                        ensure       => absent,}"
-      <code/>
-
+  - with client_email and/or key_location set in moudle ** NOT RECOMMANDED ** <br/>
+   ```
+    puppet apply --moudlepath=/moudle/path -e "cloud_machine {'test_machine':
+                                                                 provider     => 'google',
+                                                                 project_id   => 'your google project id',
+                                                                 client_email => 'google client email from service account',
+                                                                 key_location => 'google p12 key from service account',
+                                                                 ensure       => absent,
+                                                               }"
+   ```
 - Stopping & Starting GCE instance
   - Currently stopping and, starting operations are synonym to absent & present operations
