@@ -1,5 +1,15 @@
 ##<u>cloud_services</u>
-This Puppet module provides a custom type for deploying an instance in AWS and/or GCE.  
+This Puppet module provides a custom type for deploying an instance in AWS and/or GCE.
+
+##Prerequisite
+- fog library
+```
+gem install fog
+```
+- Google API Client library
+```
+gem install google-api-client
+```
 
 ##<u>Supported Environment Variables</u>
 - for AWS instance
